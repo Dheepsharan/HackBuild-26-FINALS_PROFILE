@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CraftPulse — HackBuild '26 Pitch Script</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --gold: #d97706;
+      --dark: #0f172a;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --bg-subtle: #f8fafc;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background-color: #f1f5f9;
+      line-height: 1.55;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .step-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .qa-table-wrap {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-print:hover {
+      background: var(--primary-dark);
+    }
+
+    .header-banner {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .header-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: #fef3c7;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 16px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .meta-item strong {
+      color: var(--dark);
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .meta-item a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--dark);
+      margin: 36px 0 20px;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ecfdf5;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid #a7f3d0;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    .speech-box {
+      background: #f8fafc;
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .speech-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .speech-text {
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .action-box {
+      background: #fffbeb;
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: #78350f;
+    }
+
+    .action-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b45309;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .action-text ul {
+      margin-left: 18px;
+      margin-top: 4px;
+    }
+
+    .action-text li {
+      margin-bottom: 3px;
+    }
+
+    .quote-box {
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      border-left: 4px solid #db2777;
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin: 12px 0;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 15px;
+      color: #831843;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-subtle);
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td strong {
+      color: var(--dark);
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-actions no-print">
+      <button class="btn-print" onclick="window.print()">
+        🖨️ Print / Save as PDF
+      </button>
+    </div>
+
+    <div class="header-banner">
+      <span class="header-tag">HackBuild '26 Grand Finale Pitch Deck</span>
+      <h1>CraftPulse — Pitch Presentation Script</h1>
+      
+      <div class="metadata-grid">
+        <div class="meta-item">
+          <strong>Event</strong>
+          HackBuild '26 Grand Finale
+        </div>
+        <div class="meta-item">
+          <strong>Team</strong>
+          Team CraftPulse (Led by Dheepsharan)
+        </div>
+        <div class="meta-item">
+          <strong>Live Prototype Link</strong>
+          <a href="https://craftpulse-fxly.netlify.app/split.html" target="_blank">craftpulse-fxly.netlify.app/split.html</a>
+        </div>
+        <div class="meta-item">
+          <strong>Format</strong>
+          Spoken Narrative + Synchronized Screen Actions
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">🧭 Step-by-Step Presentation Cue Sheet</h2>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 01</span>
+        <span class="step-title">HackBuild '26 Welcome, Team Intro & Video Presentation Interlude</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "A very warm and energetic good morning to our distinguished panel of judges, mentors, organizers, and fellow builders at <strong>HackBuild '26</strong>! We are <strong>Team CraftPulse</strong>, led by myself, <strong>Dheepsharan</strong>, and my team members.<br><br>
+          In every Indian neighborhood, the highest-quality craftsmanship doesn't come from massive, faceless e-commerce warehouses — it lives in the hands of our local master cobblers, bespoke silk tailors, artisanal bakers, and generational silversmiths. Yet today, finding them involves blind guesswork on pricing, zero queue visibility, and endless phone calls.<br><br>
+          <strong>Before diving into our live prototype, let's take a quick look at a brief video presentation that captures the ground reality of our artisans and the core problem statement we set out to solve.</strong><br>
+          <em>(Play video clip)</em><br>
+          As you saw in the video, while fast fashion and mass-produced goods take over, our local craft masters struggle without digital tools, transparent pricing, or delivery logistics.<br><br>
+          To solve this, we built <strong>CraftPulse</strong> — the Hyperlocal Operating System connecting neighborhood patrons with verified master craft guilds. Now, let us dive straight into our live prototype."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          <ul>
+            <li>Greet the jury, play the short video presentation clip.</li>
+            <li>Immediately following the clip, switch to the live dual split screen at <strong>https://craftpulse-fxly.netlify.app/split.html</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 02</span>
+        <span class="step-title">Why We Open in a 2-View Split Screen</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Judges, to demonstrate the complete bidirectional lifecycle without switching between different laptops or tabs, we built this dedicated <strong>Dual Split Studio</strong>.<br>
+          On the <strong>Left Pane</strong>, you see the <strong>Customer Portal</strong> as used by a patron like Dheepsharan in HAL 2nd Stage, Indiranagar.<br>
+          On the <strong>Right Pane</strong>, you see the <strong>Artisan Workbench</strong> used by a master craftsman like Vikram at Footshop on 12th Main Road.<br>
+          Both panes run in <strong>completely independent, tab-isolated browser sessions</strong> — yet they communicate simultaneously with sub-20 millisecond real-time sync."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Point to the emerald green header on the left (<strong>👤 CUSTOMER PORTAL</strong>) and the royal gold header on the right (<strong>🛠️ ARTISAN WORKBENCH</strong>).
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 03</span>
+        <span class="step-title">Opening the Homepage: Layout & Crisp Filtering</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Let's explore the customer discovery interface. At the top, notice our <strong>Auto-Rotating Craft Showcase</strong> — highlighting real atelier photography and quotes that celebrate neighborhood skill.<br>
+          Below it, our <strong>Guild Filters</strong> allow one-tap filtering across Footwear, Tailoring, Cakes, Ceramics, Jewelry, and Woodcraft.<br>
+          We've also built <strong>Tiered Budget Filters</strong> — from quick mends under ₹200 up to royal bespoke couture above ₹1,000, along with a live price slider and turnaround sorting."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          <ul>
+            <li>Point to the hero carousel auto-rotating with craft quotes.</li>
+            <li>Click on the <strong>👟 Footwear</strong> category card ➔ show list filtering instantly.</li>
+            <li>Adjust the <strong>Max Rate</strong> slider or click the <strong>🥉 Under ₹200</strong> budget card.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 04</span>
+        <span class="step-title">The 2D Interactive Neighborhood Map Section</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Right below the filters is our <strong>Dedicated 2D Geospatial Radar Map</strong> of Indiranagar, Bengaluru. Instead of an unhelpful static list, patrons see exactly where each atelier is located relative to their live position.<br>
+          Notice what happens when I hover over any pin — for example, Footshop on 12th Main Road: an <strong>interactive info card</strong> pops up instantly, displaying the atelier's live queue status, approximate ready time, starting rates, customer review quotes, and a direct 1-click order button."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          <ul>
+            <li>Click <strong><code>🗺️ 2D Atelier Map</code></strong> on the top nav to smoothly scroll straight to the map.</li>
+            <li>Hover over the <strong>👟 Footshop pin</strong> ➔ show the floating card with <em>Approx. 1–2 hrs</em>, <em>★4.9</em>, and review quote.</li>
+            <li>Click the <strong><code>⛶ Fullscreen View</code></strong> button on the map header briefly to show the modal capability, then close.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 05</span>
+        <span class="step-title">Selecting a Service & Garment Measurements</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "When a patron selects a service — say, custom tailoring from Asha's Silk Atelier or sneaker restoration from Footshop — CraftPulse removes all ambiguity. For tailoring, our system <strong>autofills saved body measurements</strong> — chest, waist, shoulder, and length — directly from the user profile, eliminating the need to visit the shop with a tape measure. Patrons also choose their fulfillment: shop pickup or doorstep courier delivery."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Click on <strong>Footshop</strong> or <strong>Asha's Atelier</strong> ➔ Click <strong>Order Piece</strong> ➔ Show the pre-filled service name, price, and measurement inputs.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 06</span>
+        <span class="step-title">The Animated Human Standing Queue System</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "One of our standout features is the <strong>Human Standing Queue Widget</strong>. Rather than guessing when your item will be ready, you see an animated queue of avatars representing customers currently in line at that workbench. It calculates the realistic wait time based on active jobs ahead of you, so you know exactly when to expect your craft."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Scroll down on the Customer pane to the atelier card ➔ Point out the animated human queue widget with avatars standing in line and the badge reading <em>'Approx. 1–2 hrs'</em>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 07</span>
+        <span class="step-title">Requesting the Service</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Now, let's submit our request. I'll click <strong>Order from Atelier</strong> (or trigger our 1-click test request). The order is dispatched with custom instructions, delivery preference, and agreed price."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Click <strong><code>⚡ 1-Click Order (Left ➔ Right)</code></strong> on the top control bar (or submit the modal form on the left).
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 08</span>
+        <span class="step-title">Moving to the Maker's Page: Workbench Overview</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Now direct your eyes to the <strong>Right Pane — the Artisan Workbench</strong>. Notice that Vikram did NOT have to refresh his screen. The new order <code>#ord-XXXX</code> popped up instantly on his live workbench queue!<br>
+          His screen is purpose-built for craftsman ergonomics: high contrast, zero clutter, showing active jobs, client notes, turnaround timers, and material requirements."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Point to the incoming card on the right workbench with the customer's name (Dheepsharan) and order details.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 09</span>
+        <span class="step-title">Accepting or Rejecting the Order</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "The artisan has full autonomy over their workshop schedule. If their queue is overflowing, they can decline with a polite reason like 'Unavailable on requested date'.<br>
+          When they are ready to craft, they simply tap <strong>Accept Order</strong>."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Click <strong><code>🔨 Accept Order (Right ➔ Left)</code></strong> in the top bar (or click <strong>Accept Order</strong> on the workbench card in the right pane).
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 10 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 10</span>
+        <span class="step-title">Instant Reflection of Maker Changes in the Customer View</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Look back at the <strong>Left Pane (Customer Portal)</strong>: the moment Vikram tapped Accept on the right, the customer's status changed from 'Requested' to 'In Progress' with zero latency.<br>
+          Our dual-channel synchronization engine runs sub-20ms updates, ensuring that customer anxiety is completely eliminated."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Point to the customer's order card updating in real time with the active green progress bar and timer.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 11 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 11</span>
+        <span class="step-title">Lifecycle Timeline & Porter Hyperlocal Delivery Stepper</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "As the craft moves through its lifecycle, the timeline dynamically updates.<br>
+          Once the craft is ready, our integrated <strong>Porter Hyperlocal Delivery Stepper</strong> activates. Watch as we advance the courier:<br>
+          <em>Ready for Dispatch ➔ Delivery Requested ➔ Picked Up by Courier ➔ Out for Delivery ➔ Delivered to Doorstep</em>."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Click the <strong><code>🚚 Dispatch Courier</code></strong> button in the top bar ➔ Show the 5-step Porter delivery stepper with rider name, live tracking ID, and green checkmarks advancing.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 12 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 12</span>
+        <span class="step-title">Invoice Generation & UPI Payment Method</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Finally, settling the order is frictionless. Customers can choose <strong>Cash on Delivery</strong> or tap <strong>Online Payment</strong>.<br>
+          When they choose online payment, CraftPulse opens a <strong>Scan & Pay UPI Modal</strong> with a dedicated QR code compatible with Google Pay, PhonePe, and Paytm.<br>
+          Once simulated, the system automatically generates an official, printable <strong>Tax Invoice</strong> complete with GST breakdown, atelier license details, and Porter delivery charges."
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          <ul>
+            <li>Click <strong>Pay & Generate Invoice</strong> on the customer card.</li>
+            <li>Show the UPI QR Code modal with Google Pay / PhonePe badges.</li>
+            <li>Click <strong>Simulate Successful Payment</strong> ➔ The official printable Tax Invoice pops up immediately on screen.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 13 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-num">Step 13</span>
+        <span class="step-title">Inspiring Closure & Memorable Quote</span>
+      </div>
+      <div class="speech-box">
+        <span class="speech-label">🎙️ What to Say:</span>
+        <div class="speech-text">
+          "Judges, Steve Jobs once famously said:
+          <div class="quote-box">
+            "Technology alone is not enough — it's technology married with liberal arts, married with the humanities, that yields us the results that make our hearts sing."
+          </div>
+          In an era of mass-produced, disposable goods, CraftPulse is that exact bridge. We don't replace human hands with automation — we empower human mastery with modern software.<br>
+          We give dignity, predictability, and steady livelihood to our master artisans, and we give convenience, trust, and transparency to our patrons.<br><br>
+          On behalf of <strong>Team CraftPulse</strong>, thank you to the organizers and judges of <strong>HackBuild '26</strong>. We are now excited to answer your questions!"
+        </div>
+      </div>
+      <div class="action-box">
+        <span class="action-label">🖥️ On Screen:</span>
+        <div class="action-text">
+          Show the clean split-screen with the live production URL <strong>https://craftpulse-fxly.netlify.app/split.html</strong> and step forward for jury Q&A.
+        </div>
+      </div>
+    </div>
+
+    <!-- QA Table -->
+    <div class="qa-table-wrap">
+      <h2 class="section-title">🛡️ Quick Reference: Anticipated Judge Questions & Winning Answers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 35%;">Anticipated Question</th>
+            <th style="width: 65%;">Winning Answer Key Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>What is your revenue model?</strong></td>
+            <td>1. ₹10–₹15 convenience markup on Porter courier dispatches.<br>2. Guild Pro subscription (₹499/mo) for queue analytics, SMS alerts & automated bookkeeping.<br>3. 1.5% micro-fee on escrow UPI payments.</td>
+          </tr>
+          <tr>
+            <td><strong>Why not just use WhatsApp Business?</strong></td>
+            <td>Artisans lose hours answering <em>"Is it ready?"</em> and tracking misplaced physical slips. CraftPulse automates live queue status, offers doorstep courier booking, and issues legal GST tax invoices.</td>
+          </tr>
+          <tr>
+            <td><strong>How does offline/low connectivity work?</strong></td>
+            <td>Built as an offline-first PWA using <code>localStorage</code> caching and background sync when connection restores.</td>
+          </tr>
+          <tr>
+            <td><strong>Is this actually deployed?</strong></td>
+            <td>Yes, live on production with edge CDN and HTTPS at <a href="https://craftpulse-fxly.netlify.app" target="_blank"><strong>https://craftpulse-fxly.netlify.app</strong></a>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      CraftPulse Hyperlocal Atelier OS • Built for HackBuild '26 • Presented by Team CraftPulse
+    </div>
+  </div>
+
+</body>
+</html>

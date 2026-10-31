@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CraftPulse · Smart Device Selector</title>
+  <style>
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F8F5EE;
+      color: #111A16;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .dispatch-box {
+      background: #FFFFFF;
+      border: 1px solid #E2DAC6;
+      border-radius: 20px;
+      padding: 36px 28px;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(10, 61, 46, 0.08);
+    }
+    .badge {
+      display: inline-block;
+      background: #E5B83B;
+      color: #06261D;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: serif;
+      font-size: 26px;
+      color: #0A3D2E;
+      margin: 0 0 8px;
+    }
+    p {
+      color: #53635B;
+      font-size: 13.5px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dispatch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    .btn-mobile {
+      background: #0A3D2E;
+      color: #FFFFFF;
+    }
+    .btn-mobile:hover {
+      background: #145945;
+      transform: translateY(-2px);
+    }
+    .btn-laptop {
+      background: #FDF9EE;
+      color: #0A3D2E;
+      border: 1.5px solid #E5B83B;
+    }
+    .btn-laptop:hover {
+      background: #E5B83B;
+      color: #06261D;
+      transform: translateY(-2px);
+    }
+  </style>
+  <script>
+    // Auto-detect and route immediately
+    (function() {
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
+      if (isMobile) {
+        window.location.replace("mobile.html");
+      } else {
+        window.location.replace("laptop.html");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="dispatch-box">
+    <span class="badge">CraftPulse Multi-Device</span>
+    <h1>Neighbourhood Makers</h1>
+    <p>Detecting your device and opening the optimized edition automatically...</p>
+    <div class="btn-row">
+      <a href="mobile.html" class="dispatch-btn btn-mobile">📱 Open Mobile Edition</a>
+      <a href="laptop.html" class="dispatch-btn btn-laptop">💻 Open Laptop Edition</a>
+    </div>
+  </div>
+</body>
+</html>

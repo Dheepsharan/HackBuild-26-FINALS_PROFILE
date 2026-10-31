@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CraftPulse · Hack Build'26 Pitch & Demo Video Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0C1210;
+      --card-bg: #141D1A;
+      --paper: #182420;
+      --ink: #F4EFE6;
+      --ink-muted: #A1B2AA;
+      --line: #273630;
+      
+      --royal-emerald: #0A3D2E;
+      --royal-emerald-bright: #3DB88F;
+      --royal-gold: #E5B83B;
+      --royal-gold-light: #FDF9EE;
+      --royal-copper: #E67A4D;
+      
+      --google-blue: #4285F4;
+      --google-red: #EA4335;
+      --google-yellow: #FBBC04;
+      --google-green: #34A853;
+      
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #060908;
+      color: var(--ink);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Action Bar */
+    header.studio-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #111A16;
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gdg-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logo-bracket {
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: -2px;
+    }
+
+    .badge-track {
+      background: rgba(229, 184, 59, 0.15);
+      border: 1px solid var(--royal-gold);
+      color: var(--royal-gold);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .controls-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-gold {
+      background: var(--royal-gold);
+      color: #06261D;
+    }
+    .btn-gold:hover {
+      background: #f1c750;
+      transform: translateY(-1px);
+    }
+
+    .btn-emerald {
+      background: var(--royal-emerald-bright);
+      color: #06261D;
+    }
+    .btn-emerald:hover {
+      background: #4ecfa3;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .btn-outline:hover {
+      background: #1b2823;
+      border-color: var(--ink-muted);
+    }
+
+    .btn-record {
+      background: #EA4335;
+      color: #FFFFFF;
+      animation: pulseRecord 2s infinite;
+    }
+    @keyframes pulseRecord {
+      0% { box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(234, 67, 53, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(234, 67, 53, 0); }
+    }
+
+    /* Main Stage Layout */
+    .studio-stage {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 65px);
+      position: relative;
+    }
+
+    /* Video Presentation Screen (16:9 Aspect ratio maintained) */
+    .presentation-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: #080D0B;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aspect-screen {
+      width: 100%;
+      max-width: 1320px;
+      aspect-ratio: 16 / 9;
+      background: #0C1411;
+      border-radius: 16px;
+      border: 1px solid #22332C;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Slide Content Pages */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 48px 56px;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Slide Header */
+    .slide-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+    }
+
+    .gdg-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+
+    .gdg-dots {
+      display: flex;
+      gap: 4px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .dot.blue { background: var(--google-blue); }
+    .dot.red { background: var(--google-red); }
+    .dot.yellow { background: var(--google-yellow); }
+    .dot.green { background: var(--google-green); }
+
+    .slide-number {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--royal-gold);
+      background: rgba(229, 184, 59, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(229, 184, 59, 0.2);
+    }
+
+    /* Typography & Layouts */
+    h1.slide-title {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+      margin-top: 8px;
+    }
+
+    .slide-title span.highlight {
+      color: var(--royal-gold);
+    }
+
+    p.slide-subtitle {
+      font-size: 18px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    /* Slide 1 - Title Deck */
+    .slide-hero {
+      text-align: center;
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .brand-logo-text {
+      font-family: var(--font-serif);
+      font-size: 64px;
+      color: var(--royal-gold);
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 20px rgba(229, 184, 59, 0.25);
+    }
+
+    .tagline {
+      font-size: 24px;
+      color: #E1EFEA;
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+
+    .craft-badges {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .craft-badge {
+      background: #15241F;
+      border: 1px solid #273E35;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--royal-emerald-bright);
+    }
+
+    .team-card {
+      background: rgba(20, 31, 26, 0.8);
+      border: 1px solid var(--line);
+      padding: 16px 28px;
+      border-radius: 12px;
+      display: flex;
+      gap: 32px;
+      text-align: left;
+    }
+
+    .team-item h5 {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--royal-gold);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .team-item p {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    /* Slide 2 - Problem Statement */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+      margin: auto 0;
+    }
+
+    .problem-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .prob-box {
+      background: #141E1A;
+      border: 1px solid #23342D;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .prob-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(234, 67, 53, 0.15);
+      color: #EA4335;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .prob-box h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #FFFFFF;
+    }
+
+    .prob-box p {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .persona-card {
+      background: linear-gradient(145deg, #1A1315, #141E1A);
+      border: 1px solid #3D2527;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .persona-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #EA4335;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+
+    .persona-story {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #E2DAC6;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 14px;
+    }
+
+    .stat-pill h3 {
+      font-size: 26px;
+      font-family: var(--font-serif);
+      color: #EA4335;
+    }
+
+    .stat-pill p {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    /* Slide 3 - Solution */
+    .solution-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: auto 0;
+    }
+
+    .sol-step {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      align-items: center;
+      background: #141F1B;
+      border: 1px solid #21332C;
+      border-radius: 10px;
+      padding: 12px 20px;
+      gap: 16px;
+    }
+
+    .sol-step-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--royal-gold);
+    }
+
+    .sol-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(229, 184, 59, 0.2);
+      color: var(--royal-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .action-side {
+      font-size: 13.5px;
+    }
+    .action-side span.role {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--royal-emerald-bright);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Slide 4 - Uniqueness */
+    .compare-container {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 28px;
+      margin: auto 0;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #23342D;
+    }
+    .compare-table th {
+      color: var(--ink-muted);
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .compare-table td.brand-col {
+      color: var(--royal-gold);
+      font-weight: 700;
+    }
+
+    .pillars-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pillar-box {
+      background: #141F1B;
+      border-left: 3px solid var(--royal-gold);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+    }
+    .pillar-box h4 {
+      font-size: 14px;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .pillar-box p {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+
+    /* Slide 5 - Technical Architecture */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: auto 0;
+    }
+
+    .tech-stack-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .tech-card {
+      background: #141F1B;
+      border: 1px solid #21332C;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .tech-card h5 {
+      color: var(--royal-gold);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .tech-card p {
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .lifecycle-container {
+      background: #121916;
+      border: 1px solid #24352D;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .lifecycle-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    .state-pill {
+      background: #1C2D26;
+      border: 1px solid var(--royal-emerald-bright);
+      color: #E1EFEA;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    /* Slide 6 - Live Prototype Embed */
+    .demo-slide-frame {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+      height: 100%;
+    }
+
+    .demo-sidebar {
+      background: #121A16;
+      border: 1px solid #203129;
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .demo-sidebar h3 {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--royal-gold);
+      margin-bottom: 8px;
+    }
+
+    .cue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12.5px;
+    }
+    .cue-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: var(--ink-muted);
+    }
+    .cue-item.active {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+    .cue-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--royal-gold);
+      margin-top: 6px;
+    }
+
+    .iframe-window {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 2px solid #23342D;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
+
+    .browser-toolbar {
+      background: #1B2622;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #2A3B34;
+    }
+
+    .url-pill {
+      background: #111A16;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      color: var(--royal-gold);
+      flex: 1;
+    }
+
+    iframe#prototype-frame {
+      width: 100%;
+      height: calc(100% - 37px);
+      border: none;
+      background: #F8F5EE;
+    }
+
+    /* Slide 7 - Roadmap & Scalability */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin: auto 0;
+    }
+
+    .roadmap-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .road-step {
+      display: flex;
+      gap: 14px;
+      background: #141F1B;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border-left: 3px solid var(--royal-emerald-bright);
+    }
+    .road-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--royal-emerald-bright);
+      text-transform: uppercase;
+      min-width: 50px;
+    }
+
+    /* Slide 8 - Thank You */
+    .thankyou-box {
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .thankyou-box h2 {
+      font-family: var(--font-serif);
+      font-size: 58px;
+      color: var(--royal-gold);
+      margin-bottom: 12px;
+    }
+
+    /* Teleprompter & Script Drawer */
+    .teleprompter-drawer {
+      width: 360px;
+      background: #111A16;
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .teleprompter-drawer.collapsed {
+      width: 0;
+      overflow: hidden;
+    }
+
+    .drawer-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .script-body {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #E2DAC6;
+    }
+
+    .script-section {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #22332C;
+    }
+
+    .script-section.active {
+      background: rgba(229, 184, 59, 0.08);
+      border: 1px solid var(--royal-gold);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .script-time {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--royal-gold);
+      font-weight: 700;
+    }
+
+    .script-speaker {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--royal-emerald-bright);
+      margin: 4px 0;
+    }
+
+    /* Bottom Control Bar */
+    .bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #0E1613;
+      border-top: 1px solid var(--line);
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: #1B2823;
+      border-radius: 999px;
+      margin: 0 24px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .progress-bar-fill {
+      width: 12.5%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--royal-emerald-bright), var(--royal-gold));
+      transition: width 0.3s ease;
+    }
+
+    .time-tracker {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--royal-gold);
+      min-width: 90px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar -->
+  <header class="studio-bar">
+    <div class="brand-wrap">
+      <div class="gdg-logo">
+        <div class="gdg-dots">
+          <div class="dot blue"></div>
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+        </div>
+        <span style="font-weight: 800; font-size: 14px; letter-spacing: -0.3px;">GDG on Campus · CIT Chennai</span>
+      </div>
+      <span style="color: var(--ink-muted); font-size: 13px;">| Hack Build'26</span>
+      <span class="badge-track">Open Innovation</span>
+    </div>
+
+    <div class="controls-wrap">
+      <button class="btn btn-outline" id="btn-toggle-prompter" onclick="togglePrompter()">
+        📝 Teleprompter & Notes
+      </button>
+      <button class="btn btn-outline" id="btn-voice-toggle" onclick="toggleVoiceNarration()">
+        🔊 Voiceover: <span id="voice-state">OFF</span>
+      </button>
+      <button class="btn btn-emerald" id="btn-auto-present" onclick="startAutoPresentation()">
+        ▶ Auto-Play Video Mode
+      </button>
+      <button class="btn btn-record" id="btn-record-video" onclick="startVideoRecording()">
+        ⏺ Record Video (Export MP4)
+      </button>
+    </div>
+  </header>
+
+  <!-- Studio Stage -->
+  <main class="studio-stage">
+    
+    <div class="presentation-container">
+      <div class="aspect-screen" id="capture-screen">
+
+        <!-- SLIDE 1: Title & Hero -->
+        <div class="slide active" id="slide-1">
+          <div class="slide-top">
+            <div class="gdg-tag">
+              <div class="gdg-dots"><div class="dot blue"></div><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+              GDG on Campus CIT Chennai · Hack Build'26
+            </div>
+            <div class="slide-number">01 / 08</div>
+          </div>
+          
+          <div class="slide-hero">
+            <div class="brand-logo-text">CraftPulse</div>
+            <p class="tagline">Discover, order and track from the maker next door.</p>
+            <div class="craft-badges">
+              <div class="craft-badge">🧵 Tailor</div>
+              <div class="craft-badge">👞 Shoes &amp; Cobblers</div>
+              <div class="craft-badge">🎂 Artisan Cakes</div>
+              <div class="craft-badge">🪵 Wood &amp; Carpentry</div>
+            </div>
+            <div class="team-card">
+              <div class="team-item">
+                <h5>Team Name</h5>
+                <p>igniora</p>
+              </div>
+              <div class="team-item">
+                <h5>Hackathon Track</h5>
+                <p>Open Innovation</p>
+              </div>
+              <div class="team-item">
+                <h5>Team Members</h5>
+                <p>Dheep Sharan · Sankara Magesh · Dheeranjai</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted); display: flex; justify-content: space-between;">
+            <span>Hyperlocal Artisan Platform</span>
+            <span>GDG Hack Build'26</span>
+          </div>
+        </div>
+
+        <!-- SLIDE 2: Problem Statement -->
+        <div class="slide" id="slide-2">
+          <div class="slide-top">
+            <div>
+              <h1 class="slide-title">Problem Statement</h1>
+              <p class="slide-subtitle">Local makers stay invisible and service queues remain chaotic.</p>
+            </div>
+            <div class="slide-number">02 / 08</div>
+          </div>
+
+          <div class="problem-grid">
+            <div class="problem-cards">
+              <div class="prob-box">
+                <div class="prob-num">1</div>
+                <h4>Makers Are Invisible Online</h4>
+                <p>Tailors, cobblers and bakers rely 100% on walk-ins without digital presence.</p>
+              </div>
+              <div class="prob-box">
+                <div class="prob-num">2</div>
+                <h4>Can't Find or Trust</h4>
+                <p>Pricing, opening hours and reviews live in no single trusted repository.</p>
+              </div>
+              <div class="prob-box">
+                <div class="prob-num">3</div>
+                <h4>No Queue Visibility</h4>
+                <p>Customers have zero idea when their custom repair or work will actually be ready.</p>
+              </div>
+              <div class="prob-box">
+                <div class="prob-num">4</div>
+                <h4>Price &amp; Payment Chaos</h4>
+                <p>Verbal quotes, no itemized invoice trail, and missing payment confirmations.</p>
+              </div>
+            </div>
+
+            <div class="persona-card">
+              <div>
+                <div class="persona-tag">⚠️ A Day Without CraftPulse</div>
+                <div class="persona-story">
+                  "Priya's shoe sole splits. She walks to three different neighbourhood shops, hears three arbitrary quotes, and leaves with no ready date and no receipt."
+                </div>
+              </div>
+              <div class="stats-row">
+                <div class="stat-pill">
+                  <h3>3</h3>
+                  <p>Shops Visited</p>
+                </div>
+                <div class="stat-pill">
+                  <h3>3</h3>
+                  <p>Arbitrary Quotes</p>
+                </div>
+                <div class="stat-pill">
+                  <h3>0</h3>
+                  <p>Ready Estimates</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted);">
+            Real pain point experienced by over 40M+ unorganized local artisans across India.
+          </div>
+        </div>
+
+        <!-- SLIDE 3: Proposed Solution -->
+        <div class="slide" id="slide-3">
+          <div class="slide-top">
+            <div>
+              <h1 class="slide-title">Proposed Solution</h1>
+              <p class="slide-subtitle">A seamless 5-step collaborative workflow between customer and artisan.</p>
+            </div>
+            <div class="slide-number">03 / 08</div>
+          </div>
+
+          <div class="solution-timeline">
+            <div class="sol-step">
+              <div class="sol-step-label"><div class="sol-badge">1</div> Discover</div>
+              <div class="action-side"><span class="role">Customer</span>Browse nearby makers by craft, rate and distance</div>
+              <div class="action-side"><span class="role">Maker</span>Profile, services, rates and active hours go live</div>
+            </div>
+            <div class="sol-step">
+              <div class="sol-step-label"><div class="sol-badge">2</div> Request</div>
+              <div class="action-side"><span class="role">Customer</span>Pick a service, describe work &amp; place order</div>
+              <div class="action-side"><span class="role">Maker</span>Order instantly lands on live workbench inbox</div>
+            </div>
+            <div class="sol-step">
+              <div class="sol-step-label"><div class="sol-badge">3</div> Quote</div>
+              <div class="action-side"><span class="role">Customer</span>Accept fixed price or review custom quote</div>
+              <div class="action-side"><span class="role">Maker</span>Accept fixed rate or send customized quote</div>
+            </div>
+            <div class="sol-step">
+              <div class="sol-step-label"><div class="sol-badge">4</div> Track</div>
+              <div class="action-side"><span class="role">Customer</span>Live status tracking with queue-aware time estimate</div>
+              <div class="action-side"><span class="role">Maker</span>Start work, update stage, mark ready for pickup</div>
+            </div>
+            <div class="sol-step">
+              <div class="sol-step-label"><div class="sol-badge">5</div> Collect</div>
+              <div class="action-side"><span class="role">Customer</span>Pay via UPI / Cash, download invoice &amp; review</div>
+              <div class="action-side"><span class="role">Maker</span>Mark collected; instant rating update &amp; payout</div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--royal-gold);">
+            ✨ Features: Real-time maker inbox · Queue-aware ready estimates · Printable invoice · Verified reviews
+          </div>
+        </div>
+
+        <!-- SLIDE 4: Innovation & Uniqueness -->
+        <div class="slide" id="slide-4">
+          <div class="slide-top">
+            <div>
+              <h1 class="slide-title">Innovation &amp; Uniqueness</h1>
+              <p class="slide-subtitle">Engineered specifically for micro-artisans, not big retail chains.</p>
+            </div>
+            <div class="slide-number">04 / 08</div>
+          </div>
+
+          <div class="compare-container">
+            <div>
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Capability</th>
+                    <th>WhatsApp</th>
+                    <th>Marketplaces</th>
+                    <th>CraftPulse</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Hyperlocal Discovery</td>
+                    <td>❌ No</td>
+                    <td>⚠️ Partly</td>
+                    <td class="brand-col">✅ Yes</td>
+                  </tr>
+                  <tr>
+                    <td>Fixed / Custom Quote Flow</td>
+                    <td>⚠️ Manual</td>
+                    <td>⚠️ Fixed Only</td>
+                    <td class="brand-col">✅ Dynamic</td>
+                  </tr>
+                  <tr>
+                    <td>Live Queue &amp; Time Estimate</td>
+                    <td>❌ No</td>
+                    <td>❌ No</td>
+                    <td class="brand-col">✅ Real-Time</td>
+                  </tr>
+                  <tr>
+                    <td>Itemized Invoice Trail</td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                    <td class="brand-col">✅ Instant PDF</td>
+                  </tr>
+                  <tr>
+                    <td>Zero Tech Barrier for Shops</td>
+                    <td>✅ Yes</td>
+                    <td>❌ Hard</td>
+                    <td class="brand-col">✅ 1-Click UI</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pillars-stack">
+              <div class="pillar-box">
+                <h4>🛡️ Server-Enforced Workflow</h4>
+                <p>Every order transition is validated by Cloud Functions and Admin SDK, never client-side code.</p>
+              </div>
+              <div class="pillar-box">
+                <h4>⏱️ Work-Hour-Aware Queue</h4>
+                <p>Ready estimates dynamically compute based on existing backlog, worker capacity, and shop opening hours.</p>
+              </div>
+              <div class="pillar-box">
+                <h4>⚡ Dual Demo &amp; Live Modes</h4>
+                <p>Zero-friction demo mode for evaluation, switches to live Firebase production with a single config key.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted);">
+            Comparing directly against traditional offline chaos and complex e-commerce platforms.
+          </div>
+        </div>
+
+        <!-- SLIDE 5: Technical Approach & Feasibility -->
+        <div class="slide" id="slide-5">
+          <div class="slide-top">
+            <div>
+              <h1 class="slide-title">Technical Approach</h1>
+              <p class="slide-subtitle">Robust, scalable, and secure architecture built on Google Cloud &amp; Firebase.</p>
+            </div>
+            <div class="slide-number">05 / 08</div>
+          </div>
+
+          <div class="arch-grid">
+            <div class="tech-stack-cards">
+              <div class="tech-card">
+                <h5>Web App UI</h5>
+                <p>HTML5, Modern CSS, Vanilla JS. Responsive for mobile &amp; laptop with theme support.</p>
+              </div>
+              <div class="tech-card">
+                <h5>Firebase Auth</h5>
+                <p>Email/password and Google Sign-in with role-based session management.</p>
+              </div>
+              <div class="tech-card">
+                <h5>Cloud Functions</h5>
+                <p>Validates state transitions, computes queue wait-times, and triggers notifications.</p>
+              </div>
+              <div class="tech-card">
+                <h5>Cloud Firestore</h5>
+                <p>Real-time reads, order listening, and secure client-write denial rules.</p>
+              </div>
+            </div>
+
+            <div class="lifecycle-container">
+              <div>
+                <h4 style="font-size: 14px; color: #FFFFFF; margin-bottom: 6px;">Order State Machine</h4>
+                <p style="font-size: 12px; color: var(--ink-muted);">Cloud Functions strictly enforce transition prerequisites.</p>
+              </div>
+
+              <div class="lifecycle-flow">
+                <div class="state-pill">Requested</div>
+                <span style="color: var(--royal-gold);">➔</span>
+                <div class="state-pill">Quoted</div>
+                <span style="color: var(--royal-gold);">➔</span>
+                <div class="state-pill">Started</div>
+                <span style="color: var(--royal-gold);">➔</span>
+                <div class="state-pill">Ready</div>
+                <span style="color: var(--royal-gold);">➔</span>
+                <div class="state-pill">Collected</div>
+              </div>
+
+              <div style="background: rgba(234, 67, 53, 0.1); border: 1px solid rgba(234, 67, 53, 0.3); padding: 10px; border-radius: 8px;">
+                <p style="font-size: 12px; color: #F88;"><strong style="color: #EA4335;">Strict Security:</strong> Firestore rules deny all direct client write operations. Only Admin SDK transactions execute order state updates.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted);">
+            Fully tested domain models, transition handlers, and automated Firestore security rules.
+          </div>
+        </div>
+
+        <!-- SLIDE 6: Live Prototype Demo -->
+        <div class="slide" id="slide-6">
+          <div class="demo-slide-frame">
+            <div class="demo-sidebar">
+              <div>
+                <div class="gdg-tag" style="margin-bottom: 8px;">
+                  <div class="gdg-dots"><div class="dot blue"></div><div class="dot green"></div></div>
+                  Live Interactive Prototype
+                </div>
+                <h3>Prototype Walkthrough</h3>
+                <p style="font-size: 12px; color: var(--ink-muted); margin-bottom: 16px;">
+                  Real-time demo running directly on GitHub Pages.
+                </p>
+
+                <div class="cue-list">
+                  <div class="cue-item active" id="cue-1">
+                    <div class="cue-dot"></div>
+                    <div><strong>1. Discovery:</strong> Browse local makers by craft &amp; distance</div>
+                  </div>
+                  <div class="cue-item" id="cue-2">
+                    <div class="cue-dot"></div>
+                    <div><strong>2. Order &amp; Quote:</strong> Place request with custom notes</div>
+                  </div>
+                  <div class="cue-item" id="cue-3">
+                    <div class="cue-dot"></div>
+                    <div><strong>3. Artisan Studio:</strong> Maker accepts &amp; starts workbench queue</div>
+                  </div>
+                  <div class="cue-item" id="cue-4">
+                    <div class="cue-dot"></div>
+                    <div><strong>4. UPI Payment &amp; Invoice:</strong> Instant payment and downloadable receipt</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background: #17231E; padding: 12px; border-radius: 8px; border: 1px solid #23372E;">
+                <p style="font-size: 11px; color: var(--royal-gold); font-family: var(--font-mono);">github.com/Dheepsharan/HackBuild-26</p>
+                <p style="font-size: 11px; color: var(--ink-muted); margin-top: 4px;">Live: Dheepsharan/HackBuild-26</p>
+              </div>
+            </div>
+
+            <div class="iframe-window">
+              <div class="browser-toolbar">
+                <div style="display: flex; gap: 6px;">
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #EA4335; display: inline-block;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #FBBC04; display: inline-block;"></span>
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #34A853; display: inline-block;"></span>
+                </div>
+                <div class="url-pill" id="frame-url-label">laptop.html</div>
+                <button class="btn btn-outline" style="padding: 2px 8px; font-size: 11px;" onclick="switchFrameView('laptop')">💻 Laptop View</button>
+                <button class="btn btn-outline" style="padding: 2px 8px; font-size: 11px;" onclick="switchFrameView('mobile')">📱 Mobile View</button>
+                <button class="btn btn-outline" style="padding: 2px 8px; font-size: 11px;" onclick="reloadFrame()">🔄 Reload</button>
+              </div>
+              <iframe id="prototype-frame" src="laptop.html"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 7: Impact, Scalability & Roadmap -->
+        <div class="slide" id="slide-7">
+          <div class="slide-top">
+            <div>
+              <h1 class="slide-title">Impact, Scalability &amp; Roadmap</h1>
+              <p class="slide-subtitle">Empowering neighbourhood micro-economies and artisan livelihoods.</p>
+            </div>
+            <div class="slide-number">07 / 08</div>
+          </div>
+
+          <div class="roadmap-grid">
+            <div class="pillars-stack">
+              <div class="pillar-box" style="border-left-color: var(--royal-emerald-bright);">
+                <h4>👥 For Customers</h4>
+                <p>Instant access to verified local talent with transparent pricing, zero negotiation friction, and guaranteed delivery times.</p>
+              </div>
+              <div class="pillar-box" style="border-left-color: var(--royal-gold);">
+                <h4>💼 For Artisans &amp; Makers</h4>
+                <p>Free digital storefront, professionalized invoice records, and a live queue management tool on their existing phone.</p>
+              </div>
+              <div class="pillar-box" style="border-left-color: var(--google-blue);">
+                <h4>📈 Scalability Model</h4>
+                <p>Hyperlocal density rollout neighborhood-by-neighborhood. Monetization through optional featured listings and micro-transaction fees.</p>
+              </div>
+            </div>
+
+            <div class="roadmap-timeline">
+              <div class="road-step">
+                <div class="road-badge">Next</div>
+                <div>
+                  <h5 style="color: #FFF; font-size: 13.5px;">Photo &amp; Portfolio Uploads</h5>
+                  <p style="font-size: 12px; color: var(--ink-muted);">Cloud Storage integration for showcase portfolios and work-in-progress snapshots.</p>
+                </div>
+              </div>
+              <div class="road-step">
+                <div class="road-badge">Next</div>
+                <div>
+                  <h5 style="color: #FFF; font-size: 13.5px;">Artisan KYC &amp; Verification</h5>
+                  <p style="font-size: 12px; color: var(--ink-muted);">Government identity verification badges for elevated consumer trust.</p>
+                </div>
+              </div>
+              <div class="road-step">
+                <div class="road-badge">Then</div>
+                <div>
+                  <h5 style="color: #FFF; font-size: 13.5px;">Live UPI Payment Gateway</h5>
+                  <p style="font-size: 12px; color: var(--ink-muted);">Direct bank settlement and split escrows for custom high-value orders.</p>
+                </div>
+              </div>
+              <div class="road-step">
+                <div class="road-badge">Later</div>
+                <div>
+                  <h5 style="color: #FFF; font-size: 13.5px;">Native Mobile App &amp; Live Maps</h5>
+                  <p style="font-size: 12px; color: var(--ink-muted);">React Native iOS/Android builds with real-time GPS walking directions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted);">
+            Building what's next for micro-enterprises across smart cities and communities.
+          </div>
+        </div>
+
+        <!-- SLIDE 8: Thank You -->
+        <div class="slide" id="slide-8">
+          <div class="slide-top">
+            <div class="gdg-tag">
+              <div class="gdg-dots"><div class="dot blue"></div><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+              GDG on Campus CIT Chennai · Hack Build'26
+            </div>
+            <div class="slide-number">08 / 08</div>
+          </div>
+
+          <div class="thankyou-box">
+            <h2>Thank You!</h2>
+            <p style="font-size: 22px; color: #E1EFEA; margin-bottom: 24px;">Innovate Together. Build What's Next.</p>
+            <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 32px;">
+              <span class="craft-badge">Team igniora</span>
+              <span class="craft-badge">Track: Open Innovation</span>
+            </div>
+            <div style="font-size: 16px; color: var(--royal-gold);">
+              Dheep Sharan · Sankara Magesh · Dheeranjai
+            </div>
+            <p style="font-size: 13px; color: var(--ink-muted); margin-top: 12px;">We're ready for Questions &amp; Demo Inquiries!</p>
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-muted); text-align: center;">
+            CraftPulse · Discover, order and track from the maker next door.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Teleprompter / Speaker Notes Sidebar -->
+    <aside class="teleprompter-drawer" id="teleprompter">
+      <div class="drawer-header">
+        <h4 style="font-size: 14px; font-weight: 700; color: var(--royal-gold);">🎙️ Pitch Teleprompter &amp; Cues</h4>
+        <button class="btn btn-outline" style="padding: 2px 8px; font-size: 12px;" onclick="togglePrompter()">✕</button>
+      </div>
+
+      <div class="script-body">
+        <div class="script-section active" id="script-1">
+          <span class="script-time">0:00 - 0:20 (20s)</span>
+          <div class="script-speaker">Dheep Sharan · Intro</div>
+          <p>"Good morning judges! We are team igniora, and today we're proud to present <strong>CraftPulse</strong> for the Open Innovation track at Hack Build'26. CraftPulse is a hyperlocal platform designed to discover, order, and track custom services from your neighbourhood artisans—from tailors and cobblers to bakers and woodworkers."</p>
+        </div>
+
+        <div class="script-section" id="script-2">
+          <span class="script-time">0:20 - 0:50 (30s)</span>
+          <div class="script-speaker">Sankara Magesh · The Problem</div>
+          <p>"Right now, millions of skilled local makers remain completely invisible online. When Priya's shoe splits on her way to work, she has to physically visit three shops, hears three arbitrary verbal prices, and leaves with zero ready-time estimate and no receipt. Customers face price uncertainty, while artisans struggle to organize customer orders."</p>
+        </div>
+
+        <div class="script-section" id="script-3">
+          <span class="script-time">0:50 - 1:15 (25s)</span>
+          <div class="script-speaker">Dheeranjai · The Solution</div>
+          <p>"CraftPulse bridges this gap with a 5-step collaborative workflow: Discovery by distance and ratings, instant digital work requests, fixed or custom quotation negotiation, real-time queue tracking, and pickup confirmation with itemized invoices."</p>
+        </div>
+
+        <div class="script-section" id="script-4">
+          <span class="script-time">1:15 - 1:35 (20s)</span>
+          <div class="script-speaker">Team · Uniqueness</div>
+          <p>"Unlike generic e-commerce marketplaces or chaotic WhatsApp chats, CraftPulse calculates dynamic wait times using a work-hour-aware queue engine. Most importantly, all state transitions are strictly validated server-side by Cloud Functions."</p>
+        </div>
+
+        <div class="script-section" id="script-5">
+          <span class="script-time">1:35 - 1:55 (20s)</span>
+          <div class="script-speaker">Team · Tech Stack</div>
+          <p>"Under the hood, CraftPulse uses a responsive vanilla JS frontend coupled with Firebase Authentication, Cloud Firestore for real-time reads, and Cloud Functions running an Admin SDK finite-state machine. Our Firestore security rules completely deny direct client writes, ensuring tamper-proof workflow integrity."</p>
+        </div>
+
+        <div class="script-section" id="script-6">
+          <span class="script-time">1:55 - 2:35 (40s)</span>
+          <div class="script-speaker">Live Prototype Walkthrough</div>
+          <p>"Here is our live prototype running right now. As a customer, you can browse nearby ateliers, filter by craft, and place a custom service request. Now, switching to the Artisan Maker Studio, the order immediately arrives in the workbench queue. The artisan accepts it, moves it to 'In Progress', and when complete, marks it 'Ready'. The customer receives a notification, scans to pay via UPI, and downloads a clean, printable invoice."</p>
+        </div>
+
+        <div class="script-section" id="script-7">
+          <span class="script-time">2:35 - 2:50 (15s)</span>
+          <div class="script-speaker">Impact &amp; Roadmap</div>
+          <p>"CraftPulse digitizes micro-economies at zero friction. Our roadmap includes Cloud Storage portfolio uploads, maker KYC identity verification, direct UPI settlement escrows, and a React Native mobile application."</p>
+        </div>
+
+        <div class="script-section" id="script-8">
+          <span class="script-time">2:50 - 3:00 (10s)</span>
+          <div class="script-speaker">Closing</div>
+          <p>"Thank you for your time! We are Team igniora, building what's next with CraftPulse. We'd love to answer any questions!"</p>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Bottom Control Bar -->
+  <footer class="bottom-bar">
+    <div style="display: flex; gap: 8px;">
+      <button class="btn btn-outline" onclick="prevSlide()">◀ Previous</button>
+      <button class="btn btn-outline" onclick="nextSlide()">Next ▶</button>
+    </div>
+
+    <div class="progress-bar-bg" onclick="handleProgressClick(event)">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+
+    <div class="time-tracker">
+      Slide <span id="current-slide-num">1</span> / 8
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+    let autoPlayInterval = null;
+    let isAutoPlaying = false;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isVoiceNarrationOn = false;
+
+    // Slide timings in seconds for automated pitch presentation
+    const slideDurations = [20, 28, 24, 20, 20, 42, 18, 12];
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.querySelectorAll('.script-section').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === currentSlide);
+        if (idx + 1 === currentSlide) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+
+      document.getElementById('current-slide-num').textContent = currentSlide;
+      document.getElementById('progress-bar').style.width = ((currentSlide / totalSlides) * 100) + '%';
+
+      if (isVoiceNarrationOn) {
+        speakCurrentSlideScript();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function togglePrompter() {
+      document.getElementById('teleprompter').classList.toggle('collapsed');
+    }
+
+    function toggleVoiceNarration() {
+      isVoiceNarrationOn = !isVoiceNarrationOn;
+      const stateEl = document.getElementById('voice-state');
+      stateEl.textContent = isVoiceNarrationOn ? 'ON' : 'OFF';
+      stateEl.style.color = isVoiceNarrationOn ? '#3DB88F' : 'inherit';
+
+      if (isVoiceNarrationOn) {
+        speakCurrentSlideScript();
+      } else {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function speakCurrentSlideScript() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const activeScript = document.querySelector(`#script-${currentSlide} p`);
+      if (!activeScript) return;
+
+      const utterance = new SpeechSynthesisUtterance(activeScript.textContent);
+      utterance.rate = 1.02;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Auto Play Presentation
+    function startAutoPresentation() {
+      if (isAutoPlaying) {
+        stopAutoPresentation();
+        return;
+      }
+      isAutoPlaying = true;
+      document.getElementById('btn-auto-present').textContent = '⏹ Stop Auto-Play';
+      document.getElementById('btn-auto-present').classList.replace('btn-emerald', 'btn-outline');
+
+      runAutoSlideCycle();
+    }
+
+    function stopAutoPresentation() {
+      isAutoPlaying = false;
+      clearTimeout(autoPlayInterval);
+      window.speechSynthesis.cancel();
+      document.getElementById('btn-auto-present').textContent = '▶ Auto-Play Video Mode';
+      document.getElementById('btn-auto-present').classList.replace('btn-outline', 'btn-emerald');
+    }
+
+    function runAutoSlideCycle() {
+      if (!isAutoPlaying) return;
+      
+      const durationMs = (slideDurations[currentSlide - 1] || 20) * 1000;
+      
+      if (isVoiceNarrationOn) {
+        speakCurrentSlideScript();
+      }
+
+      autoPlayInterval = setTimeout(() => {
+        if (currentSlide < totalSlides) {
+          nextSlide();
+          runAutoSlideCycle();
+        } else {
+          stopAutoPresentation();
+          if (isRecording) {
+            stopVideoRecording();
+          }
+        }
+      }, durationMs);
+    }
+
+    // Video Recording with MediaRecorder API
+    async function startVideoRecording() {
+      if (isRecording) {
+        stopVideoRecording();
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { frameRate: { ideal: 30 } },
+          audio: true
+        });
+
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'CraftPulse-HackBuild26-Pitch-Demo.webm';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          }, 100);
+
+          document.getElementById('btn-record-video').textContent = '⏺ Record Video (Export MP4)';
+          document.getElementById('btn-record-video').classList.remove('btn-emerald');
+          document.getElementById('btn-record-video').classList.add('btn-record');
+          isRecording = false;
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        document.getElementById('btn-record-video').textContent = '⏹ Stop & Save Video';
+        document.getElementById('btn-record-video').classList.remove('btn-record');
+        document.getElementById('btn-record-video').classList.add('btn-emerald');
+
+        // Automatically start slide 1
+        showSlide(1);
+        startAutoPresentation();
+
+      } catch (err) {
+        alert("Screen capture was cancelled or is not supported in this browser. You can also record with Loom, OBS, or Windows Screen Recorder (Win + Alt + R).");
+        console.error(err);
+      }
+    }
+
+    function stopVideoRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+    }
+
+    function switchFrameView(mode) {
+      const frame = document.getElementById('prototype-frame');
+      const label = document.getElementById('frame-url-label');
+      if (mode === 'mobile') {
+        frame.src = 'mobile.html';
+        label.textContent = 'mobile.html';
+      } else {
+        frame.src = 'laptop.html';
+        label.textContent = 'laptop.html';
+      }
+    }
+
+    function reloadFrame() {
+      const frame = document.getElementById('prototype-frame');
+      frame.src = frame.src;
+    }
+
+    function handleProgressClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const targetPercent = clickX / rect.width;
+      const targetSlide = Math.min(totalSlides, Math.max(1, Math.round(targetPercent * totalSlides)));
+      showSlide(targetSlide);
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
