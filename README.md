@@ -14,15 +14,14 @@
 
 Experience the fully deployed application live on Netlify:
 
-| Portal | Description | Live Link |
-|---|---|---|
-| ⚖️ **Judge Split Studio** | **Recommended for presentation.** Simultaneous customer & maker view with sub-20ms real-time sync | **[Launch Split Studio ↗](https://craftpulse-fxly.netlify.app/split.html)** |
-| 💻 **Laptop / Desktop View** | Full Royal Edition desktop portal with expanded 2D geospatial map | **[Open Desktop Edition ↗](https://craftpulse-fxly.netlify.app/laptop.html)** |
-| 📱 **Mobile Responsive View** | Smartphone-optimized experience with touch-friendly bottom navigation | **[Open Mobile Edition ↗](https://craftpulse-fxly.netlify.app/mobile.html)** |
-| 🏠 **Smart Router** | Automatically routes desktop to laptop view and phones to mobile view | **[Visit craftpulse-fxly.netlify.app ↗](https://craftpulse-fxly.netlify.app/)** |
-| 🎬 **Pitch Presentation** | Interactive pitch walkthrough view with live embedded frames | **[View Pitch Presentation ↗](https://craftpulse-fxly.netlify.app/pitch_video.html)** |
 
 ---
+
+## 👥 HackBuild '26 Team
+
+* **Team Name:** Team CraftPulse
+* **Team Lead:** Dheepsharan (`dheeps02@gmail.com`)
+* **Live Deployment:** https://craftpulse-fxly.netlify.app/laptop.html
 
 ## 💡 The Problem & The CraftPulse Solution
 
@@ -145,7 +144,7 @@ To run the application on your local machine:
 * **Team Name:** Team CraftPulse
 * **Team Lead:** Dheepsharan (`dheeps02@gmail.com`)
 * **Live Deployment:** [https://craftpulse-fxly.netlify.app](https://craftpulse-fxly.netlify.app)
-* **Presentation Script:** [`PITCH_PRESENTATION_SCRIPT.md`](PITCH_PRESENTATION_SCRIPT.md)
+
 
 ---
 
